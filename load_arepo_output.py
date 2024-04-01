@@ -160,27 +160,27 @@ if __name__ == "__main__":
 print('snapn:',snapn,nftypedict)
 
 #%%
-def loadsnap(snapn):
-    tempntypedict = {'gas':0,'halo':0,'disk':0,'bulge':0,'newstars':0}
-    gassnap = np.empty((np.amax([n0typedict['gas'],nftypedict['gas']])),dtype=newdtype)
-    halosnap = np.empty((np.amax([n0typedict['halo'],nftypedict['halo']])),dtype=newdtype)
-    disksnap = np.empty((np.amax([n0typedict['disk'],nftypedict['disk']])),dtype=newdtype)
-    bulgesnap = np.empty((np.amax([n0typedict['bulge'],nftypedict['bulge']])),dtype=newdtype)
-    newstarssnap = np.empty((np.amax([n0typedict['newstars'],nftypedict['newstars']])),dtype=newdtype)
-    outputsnapdict = {'gas':gassnap,'halo':halosnap,'disk':disksnap,'bulge':bulgesnap,'newstars':newstarssnap}
+snapn = 3
+tempntypedict = {'gas':0,'halo':0,'disk':0,'bulge':0,'newstars':0}
+gassnap = np.empty((np.amax([n0typedict['gas'],nftypedict['gas']])),dtype=newdtype)
+halosnap = np.empty((np.amax([n0typedict['halo'],nftypedict['halo']])),dtype=newdtype)
+disksnap = np.empty((np.amax([n0typedict['disk'],nftypedict['disk']])),dtype=newdtype)
+bulgesnap = np.empty((np.amax([n0typedict['bulge'],nftypedict['bulge']])),dtype=newdtype)
+newstarssnap = np.empty((np.amax([n0typedict['newstars'],nftypedict['newstars']])),dtype=newdtype)
+outputsnapdict = {'gas':gassnap,'halo':halosnap,'disk':disksnap,'bulge':bulgesnap,'newstars':newstarssnap}
 
-    flist = getflist(snapn)
+flist = getflist(snapn)
 
-    #redef for mp 
-    def rtsubstruct(filen):
-        return(rtstructs(filen,flist))
-        
-    if __name__ == "__main__":
-        with mp.Pool(processes=mp.cpu_count()) as pool:#
-            for fln, output in enumerate(pool.imap(rtsubstruct, np.arange(len(flist)))):
-                predict = tempntypedict.copy()
-                for kk in output.keys():
-                    tempntypedict[kk]+=output[kk].shape[0]
-                    outputsnapdict[kk][predict[kk]:tempntypedict[kk]+1] = output[kk]
+#redef for mp 
+def rtsubstruct(filen):
+    return(rtstructs(filen,flist))
+    
+if __name__ == "__main__":
+    with mp.Pool(processes=mp.cpu_count()) as pool:#
+        for fln, output in enumerate(pool.imap(rtsubstruct, np.arange(len(flist)))):
+            predict = tempntypedict.copy()
+            for kk in output.keys():
+                tempntypedict[kk]+=output[kk].shape[0]
+                outputsnapdict[kk][predict[kk]:tempntypedict[kk]] = output[kk]
+if verbose>2:
     print('snapn:',snapn,tempntypedict)
-    return(outputsnapdict)
