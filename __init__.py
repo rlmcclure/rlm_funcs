@@ -7,7 +7,6 @@ import numpy as np
 from astropy.io import fits
 import scipy.signal as sig
 from scipy import stats
-import lightkurve as lk
 import pandas as pd
 
 from astroquery.astrometry_net import AstrometryNet
