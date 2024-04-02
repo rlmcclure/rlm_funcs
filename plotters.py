@@ -278,7 +278,7 @@ def simovert(frame,simstr='',nestdir='plots/',xylim=20,xycen=0,zlim=3,zcen=0,sv=
     ax = f.subplot_mosaic(fig_mos)#,subplot_kw={'sharex':1,'sharey':1})
 
     x='x';y='z'
-    _,bbx,bby,_=ax['A'].hist2d(frame[x],frame[y],bins=np.linspace((-1*zlim-zcen)*physmult,(zlim-zcen)*physmult,binsn),cmin=1,alpha=1,norm=mpl.colors.LogNorm(),cmap=cmapp)
+    _,bbx,bby,_=ax['A'].hist2d(frame[x],frame[y],bins=[np.linspace((-1*xylim-xycen)*physmult,(xylim-xycen)*physmult,binsn),np.linspace((-1*zlim-zcen)*physmult,(zlim-zcen)*physmult,binsn)],cmin=1,alpha=1,norm=mpl.colors.LogNorm(),cmap=cmapp)
     
     ax['A'].set_xlim((-1*xylim-xycen)*physmult,(xylim-xycen)*physmult)
     ax['A'].set_ylim((-1*zlim-zcen)*physmult,(zlim-zcen)*physmult)
@@ -289,7 +289,7 @@ def simovert(frame,simstr='',nestdir='plots/',xylim=20,xycen=0,zlim=3,zcen=0,sv=
 
 
     x='x';y='y'
-    _,bbx,bby,_=ax['B'].hist2d(frame[x],frame[y],bins=np.linspace((-1*zlim-zcen)*physmult,(zlim-zcen)*physmult,binsn),cmin=1,alpha=1,norm=mpl.colors.LogNorm(),cmap=cmapp)
+    _,bbx,bby,_=ax['B'].hist2d(frame[x],frame[y],bins=np.linspace((-1*xylim-xycen)*physmult,(xylim-xycen)*physmult,binsn),cmin=1,alpha=1,norm=mpl.colors.LogNorm(),cmap=cmapp)
     # px = bbx[(bbx>SIM.xinnerlim*physmult) & (bbx<barlims[tind]['barmax']*physmult)]
     pl = 0 
     # pu = SIM.youtlim*physmult
