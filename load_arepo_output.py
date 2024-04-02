@@ -20,27 +20,36 @@ def namestr(obj):
 
 #%%
 # first we'll set where we want it to look for the snaps
-snapdirpath = '/usr/data/scylla/rmcclure/cca/sims/lvl3/output/snapdir_'
+snapdirpath = '/usr/data/scylla/rmcclure/cca/sims/bulgeless/runs/lvl4-MB000/output/'#'/usr/data/scylla/rmcclure/cca/sims/lvl3/output/'
+nested = 0#1#
+if nested:
+    snapdirpath += 'snapdir_'
+else:
+    snapdirpath += 'snapshot_'
 newdtype = [('t','d'),('id','Q'),('x','d'),('y','d'),('z','d'),('vx','d'),('vy','d'),('vz','d')]
 nsnap = len(glob(snapdirpath+'*'))
 verbose = 3
 
-#%% helper functions
-
 # here i'm going to make a dictionary so that I can give a key and from there select the part of the sim to load
+# if you don't know these, you can explore the file with an with f= h5py.File(flist[randfilen], 'r'); print(help(f)); print(f.keys()); to learn about your file
 aspectdict = {'gas':"/PartType0",'halo':"/PartType1",'disk':"/PartType2",'bulge':"/PartType3",'newstars':"/PartType4"}
 
-def makepath(snapn):
-    if snapn <10:
-        path = snapdirpath+'00'+str(snapn)
-    elif snapn <100:
-        path = snapdirpath+'0'+str(snapn)
-    else:
-        path = snapdirpath+str(snapn)
-    return(path)
+#%% helper functions
 
-# use glob to get the list of all the snap files for that timestep
-getflist = lambda snapn: glob(makepath(snapn)+'/*.hdf5')
+def strsnapn(snapn):
+    if snapn <10:
+        snapstr = '00'+str(snapn)
+    elif snapn <100:
+        snapstr = '0'+str(snapn)
+    else:
+        snapstr = str(snapn)
+    return(snapstr)
+if nested:
+    # use glob to get the list of all the snap files for that timestep
+    getflist = lambda snapn: glob(snapdirpath+strsnapn(snapn)+'/*.hdf5')
+else:
+    getflist = lambda snapn: [snapdirpath+strsnapn(snapn)+'.hdf5']
+    
 # a quick funcitons to get the data out of the hdf5 files
 getfeature = lambda closedgroup,featstr: np.array(closedgroup.__getitem__(featstr))
 
