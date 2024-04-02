@@ -11,7 +11,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
-import lightkurve as lk
 from rlm_funcs.helpers import *
 
 #%%
