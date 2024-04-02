@@ -244,12 +244,17 @@ def linplot(fig,ax,m,b,x,ylims,label,ls='--',alpha=.8,c='grey',lw=3,lbl=1):
     return(fig,ax)
 
 
-def wbkg(fs=None):
+def wbkg(fs=None,rtax=0,alph=1,fc='white'):
     '''give a figure a white background'''
-    if fs is not None:
-        f = plt.figure(figsize=fs)
+    if rtax:
+        f,ax = plt.subplots(figsize=fs,tight_layout=True)
     else:
-        f = plt.figure()
-    f.patch.set_facecolor('white')
-    f.patch.set_alpha(0.6)
-    return f
+
+        f = plt.figure(figsize=fs,tight_layout=True)
+
+    f.patch.set_facecolor(fc)
+    f.patch.set_alpha(alph)
+    if rtax:
+        return(f,ax)
+    else:
+        return f

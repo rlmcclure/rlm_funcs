@@ -9,17 +9,17 @@ import scipy.signal as sig
 from scipy import stats
 import pandas as pd
 
-from astroquery.astrometry_net import AstrometryNet
-ast = AstrometryNet()
-ast.api_key = 'dnzncgdyolxsukyy'
+# from astroquery.astrometry_net import AstrometryNet
+# ast = AstrometryNet()
+# ast.api_key = 'dnzncgdyolxsukyy'
 
-from astroquery.mast import Catalogs
-from astroquery.vizier import Vizier
-v = Vizier()
+# from astroquery.mast import Catalogs
+# from astroquery.vizier import Vizier
+# v = Vizier()
 
 from astropy import coordinates
 from astropy import units as u
 from astropy.table import Table
 
-import kplr
-client = kplr.API()
+# import kplr
+# client = kplr.API()
