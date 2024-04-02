@@ -86,22 +86,31 @@ def rtstructs(filen,flist):
         if verbose >3:
             print(f.keys())
         hdr = f.__getitem__("/Header")
-        gas = f.__getitem__(aspectdict['gas'])
-        #gas particles
-        gasidds,gaslocs,gasvels = char(gas)
-        gasstruct = makesubstruct(tind,gasidds,gaslocs,gasvels)
-
-        halo = f.__getitem__(aspectdict['halo'])
-        #halo particles
-        haloidds,halolocs,halovels = char(halo)
-        halostruct = makesubstruct(tind,haloidds,halolocs,halovels)
 
         disk = f.__getitem__(aspectdict['disk'])
         #disk particles
         diskidds,disklocs,diskvels = char(disk)
         diskstruct = makesubstruct(tind,diskidds,disklocs,diskvels)
+        
+        if str(f.keys()).count(aspectdict['gas']):
+            gas = f.__getitem__(aspectdict['gas'])
+            #gas particles
+            gasidds,gaslocs,gasvels = char(gas)
+            gasstruct = makesubstruct(tind,gasidds,gaslocs,gasvels)
+        else:
+            gasstruct = np.zeros_like(diskstruct[0:1])
 
-        if str(f.keys()).count('Type3'):
+
+        if str(f.keys()).count(aspectdict['halo']):
+            halo = f.__getitem__(aspectdict['halo'])
+            #halo particles
+            haloidds,halolocs,halovels = char(halo)
+            halostruct = makesubstruct(tind,haloidds,halolocs,halovels)
+        else:
+            halostruct = np.zeros_like(diskstruct[0:1])
+
+
+        if str(f.keys()).count(aspectdict['bulge']):
             bulge = f.__getitem__(aspectdict['bulge'])
             #bulge particles
             bulgeidds,bulgelocs,bulgevels = char(bulge)
@@ -109,7 +118,7 @@ def rtstructs(filen,flist):
         else:
             bulgestruct = np.zeros_like(diskstruct[0:1])
 
-        if str(f.keys()).count('Type4'):
+        if str(f.keys()).count(aspectdict['newstars']):
             newstars = f.__getitem__(aspectdict['newstars'])
             #newstars particles
             newstaridds,newstarlocs,newstarvels = char(newstars)
