@@ -13,6 +13,12 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 from rlm_funcs.helpers import *
 
+params = {'axes.labelsize': 20,
+          'axes.titlesize': 20,
+          'xtick.labelsize': 16,
+          'ytick.labelsize': 16}
+plt.rcParams.update(params)
+
 #%%
 def quick_imshow(twod_field,field_title=None,cmapp='viridis',cmin=None,cmax=None,rtnfig=0):
     '''
@@ -219,7 +225,7 @@ def pixel_by_pixel(box, colrange=None, rowrange=None, cmap='BrBG', mask=None,
 
 def linplot(fig,ax,m,b,x,ylims,label,ls='--',alpha=.8,c='grey',lw=3,lbl=1):
     '''
-    creat poly func (y=mx+b) and then give it two x vals (array) to draw line between on existing plot adn axis
+    creat poly func (y=mx+b) and then give it two x vals (array) to draw line between on existing plot and axis
     '''
     if m == 'inf': 
         #set b as the y limits for the vertical line
@@ -260,7 +266,7 @@ def wbkg(fs=None,rtax=0,alph=1,fc='white'):
         return f
 
 
-def simovert(frame,simstr='',nestdir='plots/',xylim=20,xycen=0,zlim=3,zcen=0,sv=1,alph=.7,lw=.5,c='k',htch=None,ls='--',cmapp='magma_r',physmult=1,pustr='',binsn=2000):
+def simovert(frame,simstr='',nestdir='plots/',xylim=20,xycen=0,zlim=5,zcen=0,sv=1,alph=.7,lw=.5,c='k',htch=None,ls='--',cmapp='magma_r',physmult=1,pustr='',binsn=2000):
     '''
     frame has assumption of a structured array with 't' 'x' 'y' and 'z' values.
     '''
