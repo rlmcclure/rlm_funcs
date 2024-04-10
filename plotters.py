@@ -266,15 +266,24 @@ def wbkg(fs=None,rtax=0,alph=1,fc='white'):
         return f
 
 
-def simovert(frame,simstr='',nestdir='plots/',xylim=20,xycen=0,zlim=5,zcen=0,sv=1,alph=.7,lw=.5,c='k',htch=None,ls='--',cmapp='magma_r',physmult=1,pustr='',binsn=2000):
+def simovert(frame,simstr='',nestdir='plots/',xylim=20,xycen=0,zlim=5,zcen=0,sv=1,alph=.7,lw=.5,c='k',htch=None,ls='--',cmapp='magma_r',physmult=1,pustr='',binsn=2000,tind=None):
     '''
     frame has assumption of a structured array with 't' 'x' 'y' and 'z' values.
     '''
     # frame = {}
     try:
-        tind = np.unique(frame['t'])
-    except KeyError:
-        tind = 0
+        t = '%.3f'%np.unique(frame['t'])
+        if tind is None:
+            tind = np.unique(frame['tind'])
+    except ValueError:
+        try:
+            t = '%i'%np.unique(frame['t'])
+            if tind is None:
+                tind = np.unique(frame['t'])
+        except KeyError:
+            t = ''
+            if tind is None:
+                tind = ''
     f = wbkg((6,8))
     fig_mos = """
     AA
@@ -316,7 +325,7 @@ def simovert(frame,simstr='',nestdir='plots/',xylim=20,xycen=0,zlim=5,zcen=0,sv=
     ax['B'].set_ylabel(y+pustr)
     ax['B'].set_xlabel(x+pustr)
     ax['B'].grid(lw=.5,c='grey',alpha=.5)
-    ax['B'].set_title('%s, tind %i'%(simstr,tind),size=24)
+    ax['B'].set_title('%s, t %s'%(simstr,t),size=24)
     if sv:
         plt.savefig(nestdir+simstr+'/%i_simovertime.png'%tind,dpi=300,bbox_inches='tight')
         plt.close()
