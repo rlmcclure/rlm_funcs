@@ -10,6 +10,10 @@ import os
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+try:
+    from scipy import interpolate
+except ImportError:
+    raise('Install scipy or don\'t use interpolation in doublescplot.')
 import numpy as np
 from rlm_funcs.helpers import *
 
@@ -445,7 +449,7 @@ def doublescplot(x,y1,c1,y2,c2,x2=None,title='quick plot',k1=None,k2=None,kx=Non
     plt.show()
 
 
-def histhexplt(plttype,xvals,yvals,cvals=None,hexfn=np.median,f=None,ax=None,fs=None,ptitle='Quick Plot',xlim=(None,None),ylim=(None,None),vlim=(None,None),xbins=None,ybins=None,gsxdiv=100,gsydiv=100,logtog=0,densitytog=0,cmapp='viridis',xlabel=None,ylabel=None):
+def histhexplt(plttype,xvals,yvals,cvals=None,hexfn=np.median,f=None,ax=None,fs=None,ptitle='Quick Plot',xlim=(None,None),ylim=(None,None),vlim=(None,None),xbins=None,ybins=None,gsxdiv=100,gsydiv=100,logtog=0,densitytog=0,cmapp='viridis',xlabel=None,ylabel=None,rtax=0):
     if f is None:
         f,ax = wbkg(fs,rtax=1)
     elif ax is None:
@@ -533,4 +537,7 @@ def histhexplt(plttype,xvals,yvals,cvals=None,hexfn=np.median,f=None,ax=None,fs=
     ax.grid(linestyle=':',linewidth=1)
     ax.set_title(ptitle)
 
-    return(f,ax)
+    if rtax:
+        return(f,ax)
+    else:
+        plt.show()
