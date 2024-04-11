@@ -10,10 +10,10 @@ import os
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-try:
-    from scipy import interpolate
-except ImportError:
-    raise('Install scipy or don\'t use interpolation in doublescplot.')
+# try:
+#     from scipy import interpolate
+# except ImportError:
+#     raise('Install scipy or don\'t use interpolation in doublescplot.')
 import numpy as np
 from rlm_funcs.helpers import *
 
@@ -408,33 +408,32 @@ def doublescplot(x,y1,c1,y2,c2,x2=None,title='quick plot',k1=None,k2=None,kx=Non
     ax2.set_ylabel(k2,fontsize=12)
     o2 = ax2.scatter(x2,y2,c=c2,cmap=cm2,marker='D')
 
-    # add ratio through interpolating
-    if tratio == True:
+    # # add ratio through interpolating, too specific 
+    # if tratio == True:
 
-        #colorbars, has to padding adjusted for extra colorbar ofc
-        cb = f.colorbar(o1,pad=-.05)#%total')#.1)
-        cb.set_label(label=kc1,size=12,c=ct1)
-        cb.ax.tick_params(labelsize=10,color=ct1)
-        cb = f.colorbar(o2,pad=-.05)#%total')#.1)
-        cb.set_label(label=kc2,size=12,c=ct2)
-        cb.ax.tick_params(labelsize=10,color=ct2)
+    #     #colorbars, has to padding adjusted for extra colorbar ofc
+    #     cb = f.colorbar(o1,pad=-.05)#%total')#.1)
+    #     cb.set_label(label=kc1,size=12,c=ct1)
+    #     cb.ax.tick_params(labelsize=10,color=ct1)
+    #     cb = f.colorbar(o2,pad=-.05)#%total')#.1)
+    #     cb.set_label(label=kc2,size=12,c=ct2)
+    #     cb.ax.tick_params(labelsize=10,color=ct2)
 
-        tvals = np.linspace(0,SIM.tlensim*2,len(SIM.times)) #hard coded cause i'm tired    
-        fn1 = interpolate.interp1d(x,c1,kind='nearest',fill_value='extrapolate')
-        fn2 = interpolate.interp1d(x2,c2,kind='nearest',fill_value='extrapolate')
-        o3 = ax2.scatter(tvals,np.zeros(len(tvals)),c=fn2(tvals)/fn1(tvals),s=30,marker='|',cmap='Paired_r')#,vmin=0.25,vmax=4.25)
-        cb = f.colorbar(o3,pad=.12)
-        cb.set_label(label='ratio of times, %s/%s'%(k2,k1),size=12,c=ct2)
-        cb.ax.tick_params(labelsize=10,color=ct2)
+    #     tvals = np.linspace(0,SIM.tlensim*2,len(SIM.times)) #hard coded cause i'm tired    
+    #     fn1 = interpolate.interp1d(x,c1,kind='nearest',fill_value='extrapolate')
+    #     fn2 = interpolate.interp1d(x2,c2,kind='nearest',fill_value='extrapolate')
+    #     o3 = ax2.scatter(tvals,np.zeros(len(tvals)),c=fn2(tvals)/fn1(tvals),s=30,marker='|',cmap='Paired_r')#,vmin=0.25,vmax=4.25)
+    #     cb = f.colorbar(o3,pad=.12)
+    #     cb.set_label(label='ratio of times, %s/%s'%(k2,k1),size=12,c=ct2)
+    #     cb.ax.tick_params(labelsize=10,color=ct2)
 
-    else:
-        #colorbars
-        cb = f.colorbar(o1,pad=-.02)#%total')#.1)
-        cb.set_label(label=kc1,size=12,c=ct1)
-        cb.ax.tick_params(labelsize=10,color=ct1)
-        cb = f.colorbar(o2,pad=.12)#%total')#.1)
-        cb.set_label(label=kc2,size=12,c=ct2)
-        cb.ax.tick_params(labelsize=10,color=ct2)
+    #colorbars
+    cb = f.colorbar(o1,pad=-.02)#%total')#.1)
+    cb.set_label(label=kc1,size=12,c=ct1)
+    cb.ax.tick_params(labelsize=10,color=ct1)
+    cb = f.colorbar(o2,pad=.12)#%total')#.1)
+    cb.set_label(label=kc2,size=12,c=ct2)
+    cb.ax.tick_params(labelsize=10,color=ct2)
 
     #grids
     ax.tick_params(axis='x',labelsize=10)
