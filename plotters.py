@@ -510,7 +510,7 @@ def histhexplt(plttype,xvals,yvals,cvals=None,hexfn=np.median,f=None,ax=None,fs=
             binstog ='log'
         else:
             binstog=None
-        hexout=ax.hexbin(xvals,yvals,C=cvals,fn=hexfn,gridsize=gs_bs,bins=binstog,extent=list(np.array(ex_rg).flat),vmin=vlim[0],vmax=vlim[1],cmap=cmapp)
+        hexout=ax.hexbin(xvals,yvals,C=cvals,reduce_C_function=hexfn,gridsize=gs_bs,bins=binstog,extent=list(np.array(ex_rg).flat),vmin=vlim[0],vmax=vlim[1],cmap=cmapp)
         if densitytog == 1:
             outar = hexout.get_array()
             hexout.set_array(outar/np.sum(outar))
