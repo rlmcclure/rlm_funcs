@@ -523,8 +523,8 @@ def histhexplt(plttype,xvals,yvals,cvals=None,hexfn=np.median,f=None,ax=None,fs=
                 hexout.set_clim(vlim[0],vlim[1])
         if densitytog == 1:
             f.colorbar(hexout,ax=ax)#,label='relative density')
-        # else:
-            # f.colorbar(hexout,ax=ax)#,label='N')
+        else:
+            f.colorbar(hexout,ax=ax)#,label='N')
 
     ax.set_xlim(xmin,xmax)
     ax.set_ylim(ymin,ymax)
