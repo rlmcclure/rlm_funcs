@@ -115,7 +115,7 @@ def loadsnpf(filepath,cylindrical=0,keys=['disk','gas','halo','bulge','newstars'
                 idds,locs,vels = char(item)
                 struct = makesubstruct(tind,idds,locs,vels,key,cylindrical=cylindrical)
             else:
-                struct = np.empty(1,dtype=newdtype)
+                struct = np.empty(0,dtype=newdtype)
             outputdict[key] = struct
     return(outputdict)
 
