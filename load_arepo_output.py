@@ -12,6 +12,11 @@ import numpy as np
 from glob import glob
 import multiprocessing as mp
 
+try:
+    from galpy.util import coords
+except:
+    from galpy.util import bovy_coords as coords
+
 def namestr(obj):
     try:
         return([name for name in globals() if globals()[name] is obj][0])
@@ -26,7 +31,7 @@ if nested:
     snapdirpath += 'snapdir_'
 else:
     snapdirpath += 'snapshot_'
-newdtype = [('t','d'),('id','Q'),('x','d'),('y','d'),('z','d'),('vx','d'),('vy','d'),('vz','d')]
+newdtype = [('t','d'),('id','Q'),('pop','O'),('x','d'),('y','d'),('z','d'),('vx','d'),('vy','d'),('vz','d')]
 nsnap = len(glob(snapdirpath+'*'))
 verbose = 3
 
@@ -66,13 +71,16 @@ def char(aspect):
     vels = getfeature(aspect,"Velocities")
     return(idds,locs,vels)
 
-def makesubstruct(tind,idds,locs,vels):
+
+def makesubstruct(tind,idds,locs,vels,key,cylindrical=0):
+    if len(newdtype)==9 and cylindrical:
+        newdtype.extend([('vr','f'), ('vphi','f'), ('vzz','f'), ('r','f'), ('phi','f'), ('zz','f')])
     #now we'll make a structured array so we can use the data efficiently 
     snp = np.empty((len(idds)),dtype=newdtype)
 
     #once we find the time in the header we'll fix this
     snp['t'] = np.ones(len(idds))*int(tind)
-    
+    snp['pop'] = key
     #now we can fill in the info 
     snp['id'] = idds
     snp['x'] = locs[:,0]
@@ -81,62 +89,35 @@ def makesubstruct(tind,idds,locs,vels):
     snp['vx'] = vels[:,0]
     snp['vy'] = vels[:,1]
     snp['vz'] = vels[:,2]
+    if cylindrical:
+        snp['vr'],snp['vphi'],snp['vzz']=coords.rect_to_cyl_vec(snp['vx'],snp['vy'],snp['vz'],snp['x'],snp['y'],snp['z'])
+        snp['r'],snp['phi'],snp['zz']=coords.rect_to_cyl(snp['x'],snp['y'],snp['z'])
+        
     return(snp)
 
 
 #redefine for use in mp
-def rtstructs(filen,flist):
+def loadsnpf(filepath,cylindrical=0,keys=['disk','gas','halo','bulge','newstars']):
     '''
     For use on a GADGET/GIZMO sim output for hdf5 files. 
     Creates a stuctured array with the locations and velocities, and particle Ids
     '''
-    with h5py.File(flist[filen], 'r') as f:
+    outputdict = {}
+    with h5py.File(filepath, 'r') as f:
         tind = f.__str__().split('_')[1].split('.')[0]
         if verbose >3:
             print(f.keys())
-        hdr = f.__getitem__("/Header")
-
-        disk = f.__getitem__(aspectdict['disk'])
-        #disk particles
-        diskidds,disklocs,diskvels = char(disk)
-        diskstruct = makesubstruct(tind,diskidds,disklocs,diskvels)
         
-        if str(f.keys()).count(aspectdict['gas']):
-            gas = f.__getitem__(aspectdict['gas'])
-            #gas particles
-            gasidds,gaslocs,gasvels = char(gas)
-            gasstruct = makesubstruct(tind,gasidds,gaslocs,gasvels)
-        else:
-            gasstruct = np.zeros_like(diskstruct[0:1])
+        for key in keys:
+            if str(f.keys()).count(aspectdict[key]):
+                item = f.__getitem__(aspectdict[key])
+                #get particles struct
+                idds,locs,vels = char(item)
+                struct = makesubstruct(tind,idds,locs,vels,key,cylindrical=cylindrical)
+            else:
+                struct = np.empty(1,dtype=newdtype)
+            outputdict[key] = struct
 
-
-        if str(f.keys()).count(aspectdict['halo']):
-            halo = f.__getitem__(aspectdict['halo'])
-            #halo particles
-            haloidds,halolocs,halovels = char(halo)
-            halostruct = makesubstruct(tind,haloidds,halolocs,halovels)
-        else:
-            halostruct = np.zeros_like(diskstruct[0:1])
-
-
-        if str(f.keys()).count(aspectdict['bulge']):
-            bulge = f.__getitem__(aspectdict['bulge'])
-            #bulge particles
-            bulgeidds,bulgelocs,bulgevels = char(bulge)
-            bulgestruct = makesubstruct(tind,bulgeidds,bulgelocs,bulgevels)
-        else:
-            bulgestruct = np.zeros_like(diskstruct[0:1])
-
-        if str(f.keys()).count(aspectdict['newstars']):
-            newstars = f.__getitem__(aspectdict['newstars'])
-            #newstars particles
-            newstaridds,newstarlocs,newstarvels = char(newstars)
-            newstarstruct = makesubstruct(tind,newstaridds,newstarlocs,newstarvels)
-        else:
-            newstarstruct = np.zeros_like(diskstruct[0:1])
-
-    outputdict = {'gas':gasstruct,'halo':halostruct,'disk':diskstruct,'bulge':bulgestruct,'newstars':newstarstruct}
-    return(outputdict)
 
 #%% create multiprocessing loader for each snap, initalize things by loading the first and last to get array sizes
 #do first snap
