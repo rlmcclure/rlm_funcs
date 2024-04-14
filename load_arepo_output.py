@@ -117,7 +117,7 @@ def loadsnpf(filepath,cylindrical=0,keys=['disk','gas','halo','bulge','newstars'
             else:
                 struct = np.empty(1,dtype=newdtype)
             outputdict[key] = struct
-
+    return(outputdict)
 
 #%% create multiprocessing loader for each snap, initalize things by loading the first and last to get array sizes
 #do first snap
@@ -130,7 +130,7 @@ flist = getflist(snapn)
     
 #redef for mp 
 def rtsubstruct(filen):
-    return(rtstructs(filen,flist))
+    return(loadsnpf(flist[filen]))
 
 if __name__ == "__main__":
     with mp.Pool(processes=mp.cpu_count()) as pool:#
@@ -149,7 +149,7 @@ flist = getflist(snapn)
 
 #redef for mp 
 def rtsubstruct(filen):
-    return(rtstructs(filen,flist))
+    return(loadsnpf(flist[filen]))
     
 if __name__ == "__main__":
     with mp.Pool(processes=mp.cpu_count()) as pool:#
@@ -172,7 +172,7 @@ flist = getflist(snapn)
 
 #redef for mp 
 def rtsubstruct(filen):
-    return(rtstructs(filen,flist))
+    return(loadsnpf(flist[filen]))
     
 if __name__ == "__main__":
     with mp.Pool(processes=mp.cpu_count()) as pool:#
