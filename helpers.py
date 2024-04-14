@@ -9,7 +9,10 @@ helpers scripts for all other things
 """
 #%
 
+
+import datetime
 import numpy as np
+
 def namestr(obj):
     try:
         return([name for name in globals() if globals()[name] is obj][0])
@@ -25,3 +28,7 @@ def dwnsmp(listofvals,n=None):
             return(rng.choice(listofvals,size=n,replace=0))
         else:
             return(listofvals)
+
+
+def printnow(inputstr=''):
+    print(inputstr+'check: '+str(datetime.datetime.now()),flush=True)
