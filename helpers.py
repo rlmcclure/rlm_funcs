@@ -12,6 +12,7 @@ helpers scripts for all other things
 
 import datetime
 import numpy as np
+import scipy.signal as sig
 
 def namestr(obj):
     try:
@@ -32,3 +33,14 @@ def dwnsmp(listofvals,n=None):
 
 def printnow(inputstr=''):
     print(inputstr+'check: '+str(datetime.datetime.now()),flush=True)
+
+
+rescalep = lambda vals: (vals-np.amin(vals))/(np.amax(vals)-np.amin(vals))
+
+def dosmooth(vals,dtrndwind=50):
+    if type(dtrndwind) is int:
+        nsamp = dtrndwind
+    elif type(dtrndwind) is float:
+        nsamp = int(len(vals)*dtrndwind)
+    smthsrc = sig.convolve(vals-np.mean(vals), np.ones(nsamp)/nsamp, 'same')
+    return(smthsrc+np.mean(vals))
