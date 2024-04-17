@@ -31,7 +31,7 @@ if nested:
     snapdirpath += 'snapdir_'
 else:
     snapdirpath += 'snapshot_'
-newdtype = [('t','d'),('id','Q'),('pop','O'),('x','d'),('y','d'),('z','d'),('vx','d'),('vy','d'),('vz','d')]
+newdtype = [('t','d'),('id','Q'),('pop','S'),('x','d'),('y','d'),('z','d'),('vx','d'),('vy','d'),('vz','d')]
 nsnap = len(glob(snapdirpath+'*'))
 verbose = 3
 
@@ -74,7 +74,7 @@ def char(aspect):
 
 def makesubstruct(tind,idds,locs,vels,key,cylindrical=0):
     if len(newdtype)==9 and cylindrical:
-        newdtype.extend([('vr','f'), ('vphi','f'), ('vzz','f'), ('r','f'), ('phi','f'), ('zz','f')])
+        newdtype.extend([('vr','d'), ('vphi','d'), ('vzz','d'), ('r','d'), ('phi','d'), ('zz','d')])
     #now we'll make a structured array so we can use the data efficiently 
     snp = np.empty((len(idds)),dtype=newdtype)
 
