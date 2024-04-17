@@ -16,6 +16,36 @@ from spectral_cube import SpectralCube as sc
 import h5py
 from glob import glob
 
+
+#%% 
+'''
+numpy reference of datatypes 
+>>> typechars = ['S1', '?', 'B', 'D', 'G', 'F', 'I', 'H', 'L', 'O', 'Q', ... 'S', 'U', 'V', 'b', 'd', 'g', 'f', 'i', 'h', 'l', 'q'] >>> for typechar in typechars:
+... print(typechar, ' : ', np.typename(typechar))
+...
+S1  :  character
+?  :  bool
+B  :  unsigned char
+D  :  complex double precision
+G  :  complex long double precision
+F  :  complex single precision
+I  :  unsigned integer
+H  :  unsigned short
+L  :  unsigned long integer
+O  :  object
+Q  :  unsigned long long integer
+S  :  string
+U  :  unicode
+V  :  void
+b  :  signed char
+d  :  double precision
+g  :  long precision
+f  :  single precision
+i  :  integer
+h  :  short
+l  :  long integer
+q  :  long long integer
+'''
 #%%
 def checkforlineerr(hdul,verbose=None):
     '''
