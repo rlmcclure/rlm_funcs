@@ -325,16 +325,16 @@ def getfromout_hex(out):
     ys = out.get_offsets().T[1]
     return(xs,ys,zs)
 
-def overlaycontour(f,ax,out,c='k',lvls=5,lw=2,rtarr=0,hex=True,hist=False,zorder=None):
+def overlaycontour(f,ax,out,c='k',lvls=5,lw=2,rtarr=0,hex=True,hist=False,zorder=None,alpha=None):
     if hex:
         xs,ys,zs = getfromout_hex(out)
     elif hist:
         xs,ys,zs = getfromout_hist(out)
         
     try:
-        ax.tricontour(xs,ys,zs,levels=lvls,colors=c,linewidths=lw,zorder=zorder)
+        ax.tricontour(xs,ys,zs,levels=lvls,colors=c,linewidths=lw,zorder=zorder,alpha=alpha)
     except ValueError:
-        ax.tricontour(xs,ys,zs,levels=lvls,cmap=c,linewidths=lw,zorder=zorder)
+        ax.tricontour(xs,ys,zs,levels=lvls,cmap=c,linewidths=lw,zorder=zorder,alpha=alpha)
     if rtarr:
         return(f,ax,out)
     else:
