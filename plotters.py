@@ -81,6 +81,15 @@ def wbkg(fs=None,rtax=0,alph=1,fc='white'):
     else:
         return f
 
+#%
+def ravellistfigspec(axs):
+    '''
+    for use with gridspec() get list of all axis in figure
+    '''
+    axslist = []
+    for axk in list(axs.keys()):
+        axslist.append(axs[axk])
+    return(axslist)
 #%%
 def quick_imshow(twod_field,field_title=None,cmapp='viridis',cmin=None,cmax=None,rtnfig=0):
     '''
