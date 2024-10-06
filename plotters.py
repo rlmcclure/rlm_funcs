@@ -341,9 +341,9 @@ def overlaycontour(f,ax,out,c='k',lvls=5,lw=2,rtarr=0,hex=True,hist=False,zorder
         xs,ys,zs = getfromout_hist(out)
         
     try:
-        ax.tricontour(xs,ys,zs,levels=lvls,colors=c,linewidths=lw,zorder=zorder,alpha=alpha)
+        ax.tricontour(xs,ys,zs,levels=lvls,colors=c,linewidths=lw,zorder=zorder,alpha=alpha,rasterized=True)
     except ValueError:
-        ax.tricontour(xs,ys,zs,levels=lvls,cmap=c,linewidths=lw,zorder=zorder,alpha=alpha)
+        ax.tricontour(xs,ys,zs,levels=lvls,cmap=c,linewidths=lw,zorder=zorder,alpha=alpha,rasterized=True)
     if rtarr:
         return(f,ax,out)
     else:
