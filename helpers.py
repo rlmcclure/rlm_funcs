@@ -44,3 +44,10 @@ def dosmooth(vals,dtrndwind=50):
         nsamp = int(len(vals)*dtrndwind)
     smthsrc = sig.convolve(vals-np.mean(vals), np.ones(nsamp)/nsamp, 'same')
     return(smthsrc+np.mean(vals))
+
+
+def dosmoothover(arr,param,smoothwind=50):
+    smooth = np.zeros_like(arr[param])
+    for ii in np.arange(arr.shape[0]):
+        smooth[ii,:] = dosmooth(arr[param][ii,:],smoothwind)
+    return(smooth)
