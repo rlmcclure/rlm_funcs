@@ -197,6 +197,8 @@ def quick_hist(data, field_title = None,nbins=100,rng=None,nstd=1,rtnfig=0):
         plt.show()
 
         #%% pixel by pixel plot from eleanor.Visualization tess package
+
+
 def pixel_by_pixel(box, colrange=None, rowrange=None, cmap='BrBG', mask=None,
                     xlim=None,ylim=None, color_by_pixel=True, 
                     save=1,savestr=None):
