@@ -62,7 +62,7 @@ def registercmap(cmaplist,nseg=256,r=0):
         else:
             plt.register_cmap(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist), cmaplist,nseg))
 ns=256
-for cc in [myspringcs, myfunnyvalentinecs, myprettycs, mypretty2cs, mypretty3cs, lavhaze, mymosscs, myterrecs, candy, 'cividis', 'viridis', 'plasma', 'magma']:
+for cc in [myspringcs, myfunnyvalentinecs, myprettycs, mypretty2cs, mypretty3cs, lavhaze, mymosscs, myterrecs, candy]:#, 'cividis', 'viridis', 'plasma', 'magma']:
     registercmap(cc,nseg=ns)
     registercmap(cc,nseg=ns,r=1)
 
