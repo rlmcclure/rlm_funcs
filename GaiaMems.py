@@ -143,7 +143,7 @@ class GaiaClusterMembers(object):
         cmd = f"SELECT * FROM gaiaedr3.gaia_source \
         WHERE CONTAINS(POINT('ICRS',gaiaedr3.gaia_source.ra, gaiaedr3.gaia_source.dec),\
         CIRCLE('ICRS', {self.RA}, {self.Dec}, {self.radius}))=1\
-         AND pmra IS NOT NULL AND pmdec IS NOT NULL;"
+        AND pmra IS NOT NULL AND pmdec IS NOT NULL;"
         if (self.verbosity > 1):
             print(cmd)
         job = Gaia.launch_job_async(cmd, dump_to_file=False) #could save this to a file
@@ -562,6 +562,7 @@ class GaiaClusterMembers(object):
             except:
                 print('ATTN: dynamic binning failed, using orignal')
 
+<<<<<<< HEAD
         #membership calculation, apply the fit here to the whole catalog
         PPM = Fc(x,y)/pmG2D(x,y)
         self.pmg2d = pmG2D
@@ -571,6 +572,17 @@ class GaiaClusterMembers(object):
         self.catalog['membership_P']=PPM
             
                 
+=======
+                #membership calculation, apply the fit here to the whole catalog
+                PPM = Fc(x,y)/pmG2D(x,y)
+                self.pmg2d = pmG2D
+                self.fc = Fc
+                    
+                PPM[self.distcut] = PPM[self.distcut]*self.distcutP
+                self.catalog['membership_P']=PPM
+                
+            
+>>>>>>> 6ca7c9e (maybe fixint the if try block that was out of place for membership probs)
 
         if (self.showPlots):
             f = plt.figure(figsize=(8, 8))
@@ -593,22 +605,22 @@ class GaiaClusterMembers(object):
             #heatmap
             if self.limitedC == True:
                 h2D, x2D, y2D, im = ax2.hist2d(xm, ym, bins=[self.PMxbins, self.PMybins],\
-                                               range=[[self.PMxmin, self.PMxmax], [self.PMymin, self.PMymax]], \
-                                               norm = mpl.colors.LogNorm(), cmap = 'viridis', vmin=2, vmax=6)
+                                            range=[[self.PMxmin, self.PMxmax], [self.PMymin, self.PMymax]], \
+                                            norm = mpl.colors.LogNorm(), cmap = 'viridis', vmin=2, vmax=6)
                 cb = f.colorbar(im)
                 cb.set_label("N in Bin", rotation=270)
             else:
-                 h2D, x2D, y2D, im = ax2.hist2d(xm, ym, bins=[self.PMxbins, self.PMybins],\
-                                           range=[[self.PMxmin, self.PMxmax], [self.PMymin, self.PMymax]], \
-                                           norm = mpl.colors.LogNorm(), cmap = cm.Blues)
+                h2D, x2D, y2D, im = ax2.hist2d(xm, ym, bins=[self.PMxbins, self.PMybins],\
+                                        range=[[self.PMxmin, self.PMxmax], [self.PMymin, self.PMymax]], \
+                                        norm = mpl.colors.LogNorm(), cmap = cm.Blues)
             if cmarkers is not None:
                 ax2.scatter(self.catalog['pmra'][mems], self.catalog['pmdec'][mems], c=self.catalog[cmarkers][mems], cmap='magma',s=1,alpha=.2,label='Members')
             try:
                 ax2.contourf(x2D[:-1], y2D[:-1], pmG2D(xf, yf).T, cmap=cm.Reds, bins = 20, \
-                             norm=mpl.colors.LogNorm(), alpha = 0.3)
+                            norm=mpl.colors.LogNorm(), alpha = 0.3)
             except:
                 print('contour error')
-#
+            #
             ax1.set_xlim(self.PMxmin, self.PMxmax)
             ax2.set_xlim(self.PMxmin, self.PMxmax)
             ax2.set_ylim(self.PMymin, self.PMymax)
@@ -630,7 +642,7 @@ class GaiaClusterMembers(object):
             if self.titlestr is not None:
                 plt.title(str(self.titlestr))
             plt.show()
-#
+            #
             
             #plot
             f = plt.figure()
