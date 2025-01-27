@@ -320,7 +320,7 @@ def lcs2df(filesstr,aps,apN):
 #%%
 def loadfromhdf5(fn,keystrs):
     '''
-    fn (str): filename location to load hdf5 file
+    fn (str): filename location to load hdf5 file that is one level deep
     keystrs (list or str): keys you want to load,
         list will result in a pandas dataframe, (rachel will switch this to a structured array because why pandas)
         single key as string will result in numpy array
