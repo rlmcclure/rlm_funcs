@@ -317,6 +317,27 @@ def lcs2df(filesstr,aps,apN):
     #build this out to get all the apertures
     df = pd.DataFrame(data={'X':X,'Y':Y,ap:vals[:,apN],'errs':errs[:,apN]},index=ID)
     return(df)
+#%%
+def loadfromhdf5(fn,keystrs):
+    '''
+    fn (str): filename location to load hdf5 file
+    keystrs (list or str): keys you want to load,
+        list will result in a pandas dataframe, (rachel will switch this to a structured array because why pandas)
+        single key as string will result in numpy array
+    '''
+    with h5py.File(fn,'r') as f:
+        # keys = f.keys() #for logical error raising
+        # print(keys)
+        if type(keystrs) is str:
+            item = f.__getitem__(keystrs)
+            return(np.array(item))
+        else:
+            loadingdata = {}
+            for key in keystrs:
+                item = np.array(f.__getitem__(key))
+                loadingdata[key] = item
+            return(pd.DataFrame(data=loadingdata))#,index=np.array(f.__getitem__('parentid'))))
+
 
 #%%
 def loadf(path,verbose = 3, commentchar = '#', spacerchar = ' ', defaultdtype='D',typedict = {'region':'i','i_r':'i','i_z':'i'}):
