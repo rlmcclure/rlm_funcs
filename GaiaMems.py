@@ -482,85 +482,85 @@ class GaiaClusterMembers(object):
             usefitstd = False
             
 
-if self.parseClusterBins == True:
-#have to get the bin edges that are closest to the cluster range so we dont double up on members
-try:
-    #RA
-    clusterRAregion = (pmRAbins>(xFcMean-self.sigamClusterBins*xFcStd))&(pmRAbins<=(xFcMean+self.sigamClusterBins*xFcStd))
-    clusterRAregionIndx = np.where(clusterRAregion)[0]
-    lowboundRA = pmRAbins[clusterRAregionIndx[0]]
-    lowRABins = pmRAbins[:clusterRAregionIndx[0]]
-    upRABins = pmRAbins[clusterRAregionIndx[-1]+1:]
-    upboundRA = pmRAbins[clusterRAregionIndx[-1]+1]
-    
-    #Dec
-    clusterDecregion =(pmDecbins>(yFcMean-self.sigamClusterBins*yFcStd))&(pmDecbins<=(yFcMean+self.sigamClusterBins*yFcStd))
-    clusterDecregionIndx = np.where(clusterDecregion)[0]
-    lowboundDec = pmDecbins[clusterDecregionIndx[0]]
-    lowDecBins = pmDecbins[:clusterDecregionIndx[0]]
-    upDecBins = pmDecbins[clusterDecregionIndx[-1]+1:]
-    upboundDec = pmDecbins[clusterDecregionIndx[-1]+1]
-    
-    #subset of members in the bounds
-    m = self.catalog[self.members]
-    mC = (xm>lowboundRA)&(xm<=upboundRA)&(ym<=upboundDec)&(ym>lowboundDec)
-    xmC = xm[mC]
-    ymC = ym[mC]
-    
-    #ra by Scotts rule 1/(N^1/3)*sigma*3.5 with sigma as the median proper motion error in that bin
-    rng = upboundRA-lowboundRA
-    if usefitstd == True:
-        self.PMxbinsC = int(np.round(rng/(1/(len(mC)**(1/3))*xFcStd*3.5)))
-    else:
-        self.PMxbinsC = int(np.round(rng/(1/(len(mC)**(1/3))*np.median(self.catalog['pmra_error'][self.members][mC])*3.5)))
-    pmRAbinsC = np.linspace(lowboundRA,upboundRA,self.PMxbinsC)
-    
-    #dec by Scotts rule 1/(N^1/3)*sigma*3.5 with sigma as the median proper motion error in that bin
-    rng = upboundDec-lowboundDec
-    
-    if usefitstd == True:
-        self.PMybinsC = int(np.round(rng/(1/(len(mC)**(1/3))*yFcStd*3.5)))
-    else:
-        self.PMybinsC = int(np.round(rng/(1/(len(mC)**(1/3))*np.median(self.catalog['pmdec_error'][self.members][mC])*3.5)))
-    pmDecbinsC = np.linspace(lowboundDec,upboundDec,self.PMybinsC)
-    
-    
-    #make new bins
-    pmRAbins = np.concatenate((lowRABins,pmRAbinsC,upRABins[1:]),axis=0)
-    self.PMxbins = pmRAbins
-    pmDecbins = np.concatenate((lowDecBins,pmDecbinsC,upDecBins[1:]),axis=0)
-    self.PMybins = pmDecbins
-    
-    hx1D, x1D = np.histogram(xm, bins=pmRAbins)
-    hy1D, y1D = np.histogram(ym, bins=pmDecbins)
+        if self.parseClusterBins == True:
+            #have to get the bin edges that are closest to the cluster range so we dont double up on members
+            try:
+                #RA
+                clusterRAregion = (pmRAbins>(xFcMean-self.sigamClusterBins*xFcStd))&(pmRAbins<=(xFcMean+self.sigamClusterBins*xFcStd))
+                clusterRAregionIndx = np.where(clusterRAregion)[0]
+                lowboundRA = pmRAbins[clusterRAregionIndx[0]]
+                lowRABins = pmRAbins[:clusterRAregionIndx[0]]
+                upRABins = pmRAbins[clusterRAregionIndx[-1]+1:]
+                upboundRA = pmRAbins[clusterRAregionIndx[-1]+1]
+                
+                #Dec
+                clusterDecregion =(pmDecbins>(yFcMean-self.sigamClusterBins*yFcStd))&(pmDecbins<=(yFcMean+self.sigamClusterBins*yFcStd))
+                clusterDecregionIndx = np.where(clusterDecregion)[0]
+                lowboundDec = pmDecbins[clusterDecregionIndx[0]]
+                lowDecBins = pmDecbins[:clusterDecregionIndx[0]]
+                upDecBins = pmDecbins[clusterDecregionIndx[-1]+1:]
+                upboundDec = pmDecbins[clusterDecregionIndx[-1]+1]
+                
+                #subset of members in the bounds
+                m = self.catalog[self.members]
+                mC = (xm>lowboundRA)&(xm<=upboundRA)&(ym<=upboundDec)&(ym>lowboundDec)
+                xmC = xm[mC]
+                ymC = ym[mC]
+                
+                #ra by Scotts rule 1/(N^1/3)*sigma*3.5 with sigma as the median proper motion error in that bin
+                rng = upboundRA-lowboundRA
+                if usefitstd == True:
+                    self.PMxbinsC = int(np.round(rng/(1/(len(mC)**(1/3))*xFcStd*3.5)))
+                else:
+                    self.PMxbinsC = int(np.round(rng/(1/(len(mC)**(1/3))*np.median(self.catalog['pmra_error'][self.members][mC])*3.5)))
+                pmRAbinsC = np.linspace(lowboundRA,upboundRA,self.PMxbinsC)
+                
+                #dec by Scotts rule 1/(N^1/3)*sigma*3.5 with sigma as the median proper motion error in that bin
+                rng = upboundDec-lowboundDec
+                
+                if usefitstd == True:
+                    self.PMybinsC = int(np.round(rng/(1/(len(mC)**(1/3))*yFcStd*3.5)))
+                else:
+                    self.PMybinsC = int(np.round(rng/(1/(len(mC)**(1/3))*np.median(self.catalog['pmdec_error'][self.members][mC])*3.5)))
+                pmDecbinsC = np.linspace(lowboundDec,upboundDec,self.PMybinsC)
+                
+                
+                #make new bins
+                pmRAbins = np.concatenate((lowRABins,pmRAbinsC,upRABins[1:]),axis=0)
+                self.PMxbins = pmRAbins
+                pmDecbins = np.concatenate((lowDecBins,pmDecbinsC,upDecBins[1:]),axis=0)
+                self.PMybins = pmDecbins
+                
+                hx1D, x1D = np.histogram(xm, bins=pmRAbins)
+                hy1D, y1D = np.histogram(ym, bins=pmDecbins)
 
-    #2D histogram on the members so far
-    h2D, x2D, y2D = np.histogram2d(xm, ym, bins=[self.PMxbins, self.PMybins], \
-                                   range=[[self.PMxmin, self.PMxmax], [self.PMymin, self.PMymax]])
+                #2D histogram on the members so far
+                h2D, x2D, y2D = np.histogram2d(xm, ym, bins=[self.PMxbins, self.PMybins], \
+                                            range=[[self.PMxmin, self.PMxmax], [self.PMymin, self.PMymax]])
 
-    #fit on the members so far
-    PMxguess = x1D[np.argmax(hx1D)]
-    PMyguess = y1D[np.argmax(hy1D)]
-    if (self.PMmean[0] != None):
-        PMxguess = self.PMmean[0]
-    if (self.PMmean[1] != None):
-        PMyguess = self.PMmean[1]
-   
-    p_init = models.Gaussian2D(np.max(h2D.flatten()), PMxguess, PMyguess, self.PMxwdth, self.PMywdth)\
-            + models.Gaussian2D(np.max(h2D.flatten()), self.PMfieldx, self.PMfieldy, self.PMfieldxwdth, self.PMfieldywdth)
-    fit_p = fitting.LevMarLSQFitter()
-    xf, yf = np.meshgrid(x2D[:-1], y2D[:-1], indexing='ij')
-    pmG2D = fit_p(p_init, xf, yf, h2D,)
-    if (self.verbosity > 1):
-        print(pmG2D)
-        print(pmG2D.parameters)
+                #fit on the members so far
+                PMxguess = x1D[np.argmax(hx1D)]
+                PMyguess = y1D[np.argmax(hy1D)]
+                if (self.PMmean[0] != None):
+                    PMxguess = self.PMmean[0]
+                if (self.PMmean[1] != None):
+                    PMyguess = self.PMmean[1]
+            
+                p_init = models.Gaussian2D(np.max(h2D.flatten()), PMxguess, PMyguess, self.PMxwdth, self.PMywdth)\
+                        + models.Gaussian2D(np.max(h2D.flatten()), self.PMfieldx, self.PMfieldy, self.PMfieldxwdth, self.PMfieldywdth)
+                fit_p = fitting.LevMarLSQFitter()
+                xf, yf = np.meshgrid(x2D[:-1], y2D[:-1], indexing='ij')
+                pmG2D = fit_p(p_init, xf, yf, h2D,)
+                if (self.verbosity > 1):
+                    print(pmG2D)
+                    print(pmG2D.parameters)
 
-    self.GaussParams = pmG2D.parameters
-    
-    Fc = models.Gaussian2D()
-    Fc.parameters = pmG2D.parameters[0:6]
-except:
-    print('ATTN: dynamic binning failed, using orignal')
+                self.GaussParams = pmG2D.parameters
+                
+                Fc = models.Gaussian2D()
+                Fc.parameters = pmG2D.parameters[0:6]
+            except:
+                print('ATTN: dynamic binning failed, using orignal')
 
         #membership calculation, apply the fit here to the whole catalog
         PPM = Fc(x,y)/pmG2D(x,y)
@@ -569,8 +569,8 @@ except:
             
         PPM[self.distcut] = PPM[self.distcut]*self.distcutP
         self.catalog['membership_P']=PPM
-        
-        
+            
+                
 
         if (self.showPlots):
             f = plt.figure(figsize=(8, 8))
