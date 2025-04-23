@@ -51,3 +51,18 @@ def dosmoothover(arr,param,smoothwind=50):
     for ii in np.arange(arr.shape[0]):
         smooth[ii,:] = dosmooth(arr[param][ii,:],smoothwind)
     return(smooth)
+
+def quickfft(times,values,posonly=1):
+    dt = np.mean(np.diff(times))  # time step
+    fs = 1 / dt  # sampling frequency
+
+    # compute FFT
+    fft_vals = np.fft.fft(values - np.mean(values))  # remove DC component
+    freqs = np.fft.fftfreq(len(times), d=dt)
+
+    if posonly:
+        positive_freqs = freqs[freqs > 0]
+        positive_fft = np.abs(fft_vals[freqs > 0])
+        return(positive_freqs, positive_fft)
+    else:
+        return(freqs, fft_vals)
