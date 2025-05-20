@@ -13,6 +13,7 @@ helpers scripts for all other things
 import datetime
 import numpy as np
 import scipy.signal as sig
+import os
 
 def namestr(obj):
     try:
@@ -34,6 +35,19 @@ def dwnsmp(listofvals,n=None):
 def printnow(inputstr=''):
     print(inputstr+'check: '+str(datetime.datetime.now()),flush=True)
 
+def betterglob(pattern='',inputpath='.',selnot=0,indir=1,slash='/',excludelist=[]):
+    if indir: #cut off any tail
+        usepath = slash.join(inputpath.split(slash)[:-1])
+    else:
+        usepath = inputpath
+    if selnot:
+        rtlst = [usepath+slash+item for item in os.listdir(usepath) if pattern not in item]
+    else:
+        rtlst = [usepath+slash+item for item in os.listdir(usepath) if pattern in item]
+    if len(excludelist)>0:
+        for strexc in excludelist:
+            rtlst = [item for item in rtlst if strexc not in item]
+    return(rtlst)
 
 rescalep = lambda vals: (vals-np.amin(vals))/(np.amax(vals)-np.amin(vals))
 
