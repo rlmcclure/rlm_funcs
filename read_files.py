@@ -47,6 +47,59 @@ l  :  long integer
 q  :  long long integer
 '''
 #%%
+
+def openfits(datapath,varindx=1,neststr=None,verbose=None):
+    '''
+    a function to snag one variable from a fits file
+    --------
+    params:
+        datapath = filestring to location of file
+        varindx = variable's number or string index
+        verbose = bool, defaults to true for printing the info for all headers
+        neststr = nested variable's string index (optional)
+        
+    returns:
+        varstr: list of string names of variables in file 
+        vardata: the variable file data, hdul[var_indx].data
+    --------
+    '''
+    #open file
+    with fits.open(datapath) as hdul:
+
+        #get the string names of variables in HDUList
+        fileinfo = [n[1] for n in hdul.info(output=False)]
+        
+        #step thorugh and print headers
+        for ii in np.arange(np.size(hdul)):
+                hdr = hdul[ii].header
+                #if output on then print header info for each variable
+                if verbose != 0:
+                    print(' ')
+                    print(fileinfo[ii])
+                    print(hdr)
+                    print(' ')
+        
+        #if nested index is present
+        if neststr != None:
+    #        parent_vardata = np.copy(vardata)
+            vardata = hdr[neststr]
+            
+            
+        #if output on then print variable string
+        if verbose != None:
+            print(' ')
+            if type(varindx) != str:
+                print(fileinfo[varindx])
+            print(hdr)
+            print(' ')
+                
+        #get variable data
+        vardata = hdul[varindx].data
+        hdr = hdul[varindx].header
+        
+    return(hdr,vardata)
+
+
 def checkforlineerr(hdul,verbose=None):
     '''
     a function to specifically handle the GILDAS fits header error
