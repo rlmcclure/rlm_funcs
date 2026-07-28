@@ -46,26 +46,26 @@ def cmapsegmenter(strorclist,nseg=256):
         print('Issue somewhere, trouble shoot for now just giving back input.')
         cmapp = strorclist
     return(cmapp)
-def registercmap(cmaplist,nseg=256,r=0):
-    if type(cc) == str:
-        if cc[-2:]=='_r':
-            mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc,lut=nseg))
-            # plt.register_cmap(
-        elif r:
-            mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc+'_r',lut=nseg))
-        else:
-            mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc,lut=nseg))
+# def registercmap(cmaplist,nseg=256,r=0):
+#     if type(cc) == str:
+#         if cc[-2:]=='_r':
+#             mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc,lut=nseg))
+#             # plt.register_cmap(
+#         elif r:
+#             mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc+'_r',lut=nseg))
+#         else:
+#             mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc,lut=nseg))
 
         
-    elif type(cc) == list:
-        if r:
-            mpl.colormaps.register(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist)+'_r', cmaplist[::-1],nseg))
-        else:
-            mpl.colormaps.register(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist), cmaplist,nseg))
-ns=256
-for cc in [myspringcs, myfunnyvalentinecs, myprettycs, mypretty2cs, mypretty3cs, lavhaze, mymosscs, myterrecs, candy]:#, 'cividis', 'viridis', 'plasma', 'magma']:
-    registercmap(cc,nseg=ns)
-    registercmap(cc,nseg=ns,r=1)
+#     elif type(cc) == list:
+#         if r:
+#             mpl.colormaps.register(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist)+'_r', cmaplist[::-1],nseg))
+#         else:
+#             mpl.colormaps.register(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist), cmaplist,nseg))
+# ns=256
+# for cc in [myspringcs, myfunnyvalentinecs, myprettycs, mypretty2cs, mypretty3cs, lavhaze, mymosscs, myterrecs, candy]:#, 'cividis', 'viridis', 'plasma', 'magma']:
+#     registercmap(cc,nseg=ns)
+#     registercmap(cc,nseg=ns,r=1)
 
 def wbkg(fs=None,rtax=0,alph=1,fc='white'):
     '''give a figure a white background'''
