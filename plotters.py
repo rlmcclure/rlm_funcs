@@ -49,18 +49,19 @@ def cmapsegmenter(strorclist,nseg=256):
 def registercmap(cmaplist,nseg=256,r=0):
     if type(cc) == str:
         if cc[-2:]=='_r':
-            plt.register_cmap(cmap=mpl.cm.get_cmap(cc,lut=nseg))
+            mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc,lut=nseg))
+            # plt.register_cmap(
         elif r:
-            plt.register_cmap(cmap=mpl.cm.get_cmap(cc+'_r',lut=nseg))
+            mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc+'_r',lut=nseg))
         else:
-            plt.register_cmap(cmap=mpl.cm.get_cmap(cc,lut=nseg))
+            mpl.colormaps.register(cmap=mpl.cm.get_cmap(cc,lut=nseg))
 
         
     elif type(cc) == list:
         if r:
-            plt.register_cmap(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist)+'_r', cmaplist[::-1],nseg))
+            mpl.colormaps.register(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist)+'_r', cmaplist[::-1],nseg))
         else:
-            plt.register_cmap(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist), cmaplist,nseg))
+            mpl.colormaps.register(cmap=LinearSegmentedColormap.from_list(namestr(cmaplist), cmaplist,nseg))
 ns=256
 for cc in [myspringcs, myfunnyvalentinecs, myprettycs, mypretty2cs, mypretty3cs, lavhaze, mymosscs, myterrecs, candy]:#, 'cividis', 'viridis', 'plasma', 'magma']:
     registercmap(cc,nseg=ns)
